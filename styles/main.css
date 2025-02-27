@@ -43,7 +43,8 @@ main {
 
 .main-top-word {
     display: flex;
-    column-gap: 10px;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 .main-top-word-itself {
@@ -131,3 +132,33 @@ main {
     transform: translateY(7px);
     border: 1px solid rgba(255,255,255,0.4);
 }
+
+/* MEDIA QUERIES */
+
+@media (max-width: 1200px) {
+    .main-bottom-button {
+        padding-block: 5px;
+    }
+    .main-bottom {
+        grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+    }
+}
+
+@media (max-width: 800px) {
+    .main-bottom {
+        gap: 10px;
+    }
+    main {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 600px) {
+    .main-top-word-itself {
+        width: 60px;
+        height: 60px
+    }
+    main {
+        row-gap: 50px
+    }
+};
