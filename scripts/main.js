@@ -18,10 +18,15 @@ for (let i = 0; i < englishAlphabet.length; i++) {
     mainButton.classList.add('main-bottom-button');
     mainButton.textContent = englishAlphabet[i];
     mainButton.value = englishAlphabet[i].toLowerCase();
+    mainButton.accessKey = englishAlphabet[i];
 
     mainBottom.appendChild(mainButton);
 
     mainButton.addEventListener('click', () => {
+        enteringValue();
+    });
+
+    function enteringValue() {
         if (enteredInputByPlayer.length < chosenWord.length) {
             enteredInputByPlayer.push(mainButton.value);
 
@@ -56,7 +61,7 @@ for (let i = 0; i < englishAlphabet.length; i++) {
                 }; 
             };
         };
-    });
+    };
 };
 
 // CREATING THE ENTER AND REMOVE BUTTONS
