@@ -59,6 +59,14 @@ main {
     font-size: 1.9rem;
 }
 
+.main-top-word-itself-correct {
+    border: 1px solid rgb(99, 255, 47);
+}
+
+.main-top-word-itself-incorrect {
+    border: 1px solid rgb(255, 33, 33);
+}
+
 .main-top-definition {
     color: #95602e;
     padding: 10px;
@@ -107,6 +115,10 @@ main {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.main-bottom-button:disabled {
+    pointer-events: none;
 }
 
 .main-bottom-button:hover {
