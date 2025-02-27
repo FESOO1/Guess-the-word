@@ -1,17 +1,101 @@
 const mainTopWordContainer = document.querySelector('.main-top-word');
+const mainTopWordDefinitionItself = document.querySelector('.main-top-definition-itself');
 const mainBottom = document.querySelector('.main-bottom');
 const englishAlphabet = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+const fetchPromise = fetch('https://api.dictionaryapi.dev/api/v2/entries/en/hypocrisy');
+const buttonTexts = '';
+let enteredInputByPlayer = [];
+let chosenWordCounter = 0;
+let chosenWord;
+let chosenWordDefinition = [];
 
-console.log(mainBottom.childElementCount, englishAlphabet);
-
-// CREATING 26 BUTTONS
+// CREATING 26 BUTTONS FOR LETTERS
 
 for (let i = 0; i < englishAlphabet.length; i++) {
     const mainButton = document.createElement('button');
     mainButton.type = 'button';
+    mainButton.title = englishAlphabet[i];
     mainButton.classList.add('main-bottom-button');
     mainButton.textContent = englishAlphabet[i];
     mainButton.value = englishAlphabet[i].toLowerCase();
 
     mainBottom.appendChild(mainButton);
+
+    mainButton.addEventListener('click', () => {
+        if (enteredInputByPlayer.length < chosenWord.length) {
+            enteredInputByPlayer.push(mainButton.value);
+
+            mainTopWordContainer.children[chosenWordCounter].textContent = mainButton.value; 
+            chosenWordCounter++;
+        };
+
+        if (enteredInputByPlayer.length === chosenWord.length) {
+            const valueEnteredByPlayer = enteredInputByPlayer.join(',').replaceAll(',', '');
+
+            if (valueEnteredByPlayer === chosenWord) {
+                console.log(true);  
+            } else {
+                console.log(false);  
+            };
+        };
+    });
 };
+
+// CREATING THE ENTER AND REMOVE BUTTONS
+
+function removeButton() {
+    const removeButton = document.createElement('button');
+    removeButton.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" color="#ffffff" fill="none">
+            <path d="M19.0005 4.99988L5.00049 18.9999M5.00049 4.99988L19.0005 18.9999" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>`
+    ;
+    removeButton.type = 'button';
+    removeButton.title = 'Remove';
+    removeButton.classList.add('main-bottom-button');
+    mainBottom.appendChild(removeButton);
+
+    // REMOVING A WORD
+    removeButton.addEventListener('click', () => {
+        if (enteredInputByPlayer.length > 0) {
+            enteredInputByPlayer.pop();
+            chosenWordCounter--;
+            mainTopWordContainer.children[chosenWordCounter].textContent = '';
+        };
+    });
+};
+
+removeButton();
+
+async function retrieveTheData() {
+    try {
+        const response = await fetch('https://api.dictionaryapi.dev/api/v2/entries/en/hypocrisy');
+
+        if (!response.ok) {
+            throw new Error(response.status);
+        };
+
+        const data = await response.json();
+
+        // CHOSEN WORD
+        chosenWord = data[0].word.toLowerCase();
+        // CHOSEN WORD DEFINITION/DEFINITIONS
+        for (let i = 0; i < data[0].meanings[0].definitions.length; i++) {
+            chosenWordDefinition.push(data[0].meanings[0].definitions[i].definition);
+        };
+
+        mainTopWordDefinitionItself.textContent = chosenWordDefinition[0];
+
+        // ELEMENTS TO DISPLAY THE CHOSEN WORD
+        for (let i = 0; i < data[0].word.length; i++) {
+            const mainTopWordItself = document.createElement('div');
+            mainTopWordItself.classList.add('main-top-word-itself');
+
+            mainTopWordContainer.appendChild(mainTopWordItself);
+        };
+    } catch (error) {
+        console.error(error);
+    };
+};
+
+retrieveTheData();
