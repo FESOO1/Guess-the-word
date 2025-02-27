@@ -7,14 +7,11 @@ console.log(mainBottom.childElementCount, englishAlphabet);
 // CREATING 26 BUTTONS
 
 for (let i = 0; i < englishAlphabet.length; i++) {
-    function creatingButton() {
-        const mainButton = document.createElement('button');
-        mainButton.type = 'button';
-        mainButton.classList.add('main-bottom-button');
-        mainButton.textContent = englishAlphabet[i];
+    const mainButton = document.createElement('button');
+    mainButton.type = 'button';
+    mainButton.classList.add('main-bottom-button');
+    mainButton.textContent = englishAlphabet[i];
+    mainButton.value = englishAlphabet[i].toLowerCase();
 
-        mainBottom.appendChild(mainButton);
-    };
-
-    creatingButton();
+    mainBottom.appendChild(mainButton);
 };
