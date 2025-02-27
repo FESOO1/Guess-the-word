@@ -7,6 +7,7 @@ let enteredInputByPlayer = [];
 let chosenWordCounter = 0;
 let chosenWord;
 let chosenWordDefinition = [];
+let randomWord;
 
 // CREATING 26 BUTTONS FOR LETTERS
 
@@ -44,7 +45,7 @@ for (let i = 0; i < englishAlphabet.length; i++) {
                 };
 
                 setTimeout(() => {
-                    retrieveTheData();
+                    getRandomWordFromTheJsonData();
                     for (const button of mainBottom.children) {
                         button.disabled = false;
                     };
@@ -87,9 +88,34 @@ function removeButton() {
 
 removeButton();
 
+// GET RANDOM WORD FROM THE JSON DATA
+
+const getRandomWordFromTheJsonData = () => {
+    fetch('../data/words-data.json')
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(response.status);
+            };
+
+            return response.json();
+        })
+        .then(data => {
+            randomWord = data.words[Math.floor(Math.random() * data.words.length)];
+
+            retrieveTheData();
+        })
+        .catch(error => {
+            console.log(error);
+        });
+};
+
+getRandomWordFromTheJsonData();
+
+// RETRIEVE THE DATA
+
 async function retrieveTheData() {
     try {
-        const response = await fetch('https://api.dictionaryapi.dev/api/v2/entries/en/hello');
+        const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${randomWord}`);
 
         if (!response.ok) {
             throw new Error(response.status);
@@ -118,5 +144,3 @@ async function retrieveTheData() {
         console.error(error);
     };
 };
-
-retrieveTheData();
